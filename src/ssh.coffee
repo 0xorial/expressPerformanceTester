@@ -46,11 +46,19 @@ class Ssh
           reject(err)
           return
 
+        @stream = stream
+
         stream.on('close', (code, signal) ->
+          @stream = null
           resolve({code: code, signal: signal})
         ).on('data', @_onRemoteStdout)
         .stderr.on 'data', @_onRemoteStderr
         return
+
+  interrupt: ->
+    if @stream
+      @stream.write('\x03')
+
 
 
 module.exports = Ssh
