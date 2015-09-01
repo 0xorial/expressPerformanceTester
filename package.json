@@ -1,0 +1,28 @@
+{
+  "name": "expressPerformanceTester",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xorial/expressPerformanceTester.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0xorial/expressPerformanceTester/issues"
+  },
+  "homepage": "https://github.com/0xorial/expressPerformanceTester",
+  "devDependencies": {
+    "bluebird": "^2.9.34",
+    "coffee-script": "^1.9.3",
+    "do-wrapper": "^2.1.2",
+    "gulp": "^3.9.0",
+    "gulp-load-plugins": "^1.0.0-rc.1",
+    "lodash": "^3.10.1",
+    "ssh2": "^0.4.11"
+  }
+}
