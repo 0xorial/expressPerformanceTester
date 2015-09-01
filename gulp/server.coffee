@@ -6,15 +6,14 @@ Promise = require 'bluebird'
 module.exports = (gulp, $) ->
 
   gulp.task 'copy-server-package-json', ->
-    return gulp.src('./src/server/package.json')
+    return gulp.src('./src/tests/package.json')
       .pipe(gulp.dest('./build/server'))
 
   gulp.task 'clean-server', (cb) ->
-    del(['./build/server/*.*', '!./build/server/node_modules/**'], cb)
-    return
+    return del(['./build/server/*.*', '!./build/server/node_modules/**'])
 
   gulp.task 'build-server', ->
-    return gulp.src('./src/server/*.coffee')
+    return gulp.src('./src/tests/**/*.coffee')
       .pipe($.changed('./build/server'))
       .pipe($.plumber())
       .pipe($.coffee())
@@ -54,7 +53,7 @@ module.exports = (gulp, $) ->
     return
 
   gulp.task 'watch', (cb) ->
-    $.watch './src/server/**/*.coffee', ->
+    $.watch './src/tests/**/*.coffee', ->
       console.log 'change!'
       buildTask = new Promise (resolve, reject) ->
         gulp.start('build-server', resolve)
@@ -65,4 +64,13 @@ module.exports = (gulp, $) ->
 
     cb()
     return
+
+  gulp.task 'package-server', (cb) ->
+    gulp.src('build/server/**')
+        .pipe($.zip('dist.zip'))
+        .pipe(gulp.dest('./build'))
+
+  gulp.task 'build-server-dist', (cb) ->
+    sequence('clean-server', 'copy-server-package-json', 'build-server', 'prepare-server', 'package-server', cb)
+
 

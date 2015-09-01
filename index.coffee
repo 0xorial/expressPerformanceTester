@@ -1,12 +1,14 @@
-# gulp = require('gulp').parse('./gulpfile')
+buildDist = require('./src/tests-distributable-build').build
 
-Client = require('ssh2').Client
-Ssh = require('./src/ssh')
+ssh = null
 
-ip = require('fs').readFileSync('./config/server-ip', 'utf-8')
-ssh = new Ssh(ip)
-ssh.connect()
+buildDist()
+.then ->
+  Ssh = require('./src/ssh')
+  ip = require('fs').readFileSync('./config/server-ip', 'utf-8')
+  ssh = new Ssh(ip)
+  ssh.connect()
 .then ->
   ssh.exec('uptime')
-.finally ->
+.then ->
   ssh.disconnect()
