@@ -67,7 +67,8 @@ module.exports = (gulp, $) ->
 
   gulp.task 'package-server', (cb) ->
     gulp.src('build/server/**')
-        .pipe($.zip('dist.zip'))
+        .pipe($.tar('dist.tar'))
+        .pipe($.gzip())
         .pipe(gulp.dest('./build'))
 
   gulp.task 'build-server-dist', (cb) ->

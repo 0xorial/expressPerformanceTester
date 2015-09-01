@@ -12,11 +12,10 @@ exports.build = ->
       console.log e
     gulp.on 'err', (e) ->
       console.log e
-    gulp.on 'task_recursion', (e) ->
-      console.log e
 
-    process.nextTick ->
+    gulp.start('build-server-dist', (err) ->
+      if err
+        reject(err)
 
-      gulp.start.apply(gulp, ['build-server-dist'])
-
-  .delay(10000)
+      console.log(arguments)
+      resolve())
