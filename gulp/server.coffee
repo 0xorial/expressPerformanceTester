@@ -10,7 +10,7 @@ module.exports = (gulp, $) ->
       .pipe(gulp.dest('./build/server'))
 
   gulp.task 'clean-server', (cb) ->
-    return del(['./build/server/*.*', '!./build/server/node_modules/**'])
+    return del(['./build/server/**/*', './build/server/dist.tar.gz', '!./build/server/node_modules/**'])
 
   gulp.task 'copy-server-files', ->
     return gulp.src('./src/tests/**/*.html')
@@ -25,8 +25,7 @@ module.exports = (gulp, $) ->
       .pipe(gulp.dest('./build/server'))
 
   gulp.task 'build-server-full', (cb) ->
-    sequence('clean-server', 'copy-server-package-json', 'build-server', 'prepare-server', cb)
-
+    sequence('clean-server', 'copy-server-package-json', 'build-server', 'prepare-server', 'package-server', cb)
 
   gulp.task 'prepare-server', $.shell.task([
         'npm install --quiet'
@@ -43,36 +42,6 @@ module.exports = (gulp, $) ->
         runningServer.kill()
       else
         resolve()
-
-  gulp.task 'start-server', (cb) ->
-    console.log ('starting server')
-    child = spawn 'node', ['./app.js'], { cwd: './build/server' }
-    child.stdout.on 'data', (data) ->
-      console.log data.toString()
-    child.stderr.on 'data', (data) ->
-      console.log data.toString()
-    runningServer = child
-    child.on 'exit', ->
-      runningServer = null
-    cb()
-    return
-
-  gulp.task 'serve', (cb) ->
-    sequence('clean-server', 'copy-server-package-json', 'build-server', 'prepare-server', 'start-server', 'watch', cb)
-    return
-
-  gulp.task 'watch', (cb) ->
-    $.watch './src/tests/**/*.coffee', ->
-      console.log 'change!'
-      buildTask = new Promise (resolve, reject) ->
-        gulp.start('build-server', resolve)
-
-      Promise.join(buildTask, stopServer())
-        .then ->
-          gulp.start('start-server', ->)
-
-    cb()
-    return
 
   gulp.task 'package-server', (cb) ->
     gulp.src('build/server/**')
