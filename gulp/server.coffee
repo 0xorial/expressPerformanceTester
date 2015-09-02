@@ -12,7 +12,12 @@ module.exports = (gulp, $) ->
   gulp.task 'clean-server', (cb) ->
     return del(['./build/server/*.*', '!./build/server/node_modules/**'])
 
-  gulp.task 'build-server', ->
+  gulp.task 'copy-server-files', ->
+    return gulp.src('./src/tests/**/*.html')
+      .pipe($.changed('./build/server'))
+      .pipe(gulp.dest('./build/server'))
+
+  gulp.task 'build-server', ['copy-server-files'], ->
     return gulp.src('./src/tests/**/*.coffee')
       .pipe($.changed('./build/server'))
       .pipe($.plumber())
