@@ -24,6 +24,10 @@ module.exports = (gulp, $) ->
       .pipe($.coffee())
       .pipe(gulp.dest('./build/server'))
 
+  gulp.task 'build-server-full', (cb) ->
+    sequence('clean-server', 'copy-server-package-json', 'build-server', 'prepare-server', cb)
+
+
   gulp.task 'prepare-server', $.shell.task([
         'npm install --quiet'
         'npm prune --quiet'
