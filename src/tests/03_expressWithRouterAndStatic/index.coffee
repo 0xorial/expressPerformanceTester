@@ -6,7 +6,7 @@ cluster ->
   app = express()
   router = express.Router()
 
-  app.use(express.static(config.root))
+  app.use(express.static('../common/'))
   app.use('/', router)
 
   router.get '/', (req, res) ->
