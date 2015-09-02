@@ -18,6 +18,7 @@
   "homepage": "https://github.com/0xorial/expressPerformanceTester",
   "devDependencies": {
     "bluebird": "^2.9.34",
+    "chai": "^3.2.0",
     "coffee-script": "^1.9.3",
     "del": "^2.0.0",
     "do-wrapper": "^2.1.2",
